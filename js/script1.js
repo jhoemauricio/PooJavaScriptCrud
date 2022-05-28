@@ -5,6 +5,8 @@ class Produto {
         this.id = 1;
         //array de produtos 
         this.arrayProdutos = [];
+
+        this.editId = null;
               
     }
 
@@ -46,6 +48,23 @@ class Produto {
             td_produto.innerText = this.arrayProdutos[i].nomeProduto;
             td_valor.innerText = this.arrayProdutos[i].valorProduto;
 
+            let del = document.createElement('img');
+            del.style.width ="40px";
+            del.style.height = "40px";
+            del.src = 'deletar.png';
+            del.setAttribute("onclick","produto.deletar("+this.arrayProdutos[i].id+")");
+
+
+            let edit = document.createElement('img');
+            edit.style.width ="40px";
+            edit.style.height = "40px";
+            edit.src = 'editar.png';
+            edit.setAttribute("onclick","produto.preparaEditacao("+JSON.stringify(this.arrayProdutos[i])+")");
+            
+            td_acoes.appendChild(edit);
+            td_acoes.appendChild(del);
+            console.log(this.arrayProdutos);
+
 
         }
     }
@@ -57,29 +76,59 @@ class Produto {
         let produto = this.lerDados();
         //valida os campos
         this.validaCampos(produto);
-        //atribui o produto e suas propriedades ao arrayProduto
-        this.arrayProdutos.push(produto);
-        //incrementa o Id
-        this.id++;
+            if(this.editId == null){
+             this.adicionar(produto);
+
+                }else{
+                    this.atualizar(this.editId, produto);
+                }
+
+    
         //chama o metodo listaTabela
         this.listaTabela();
+     
+     
+    }
 
-        // console.log(produto);
+    adicionar(produto){
+            //atribui o produto e suas propriedades ao arrayProduto
+            this.arrayProdutos.push(produto);
+            //incrementa o Id
+            this.id++;
+
+    }
+
+    atualizar(id,produto){
+        
+        for(let i=0; i  < this.arrayProdutos.length; i++){
+            if(this.arrayProdutos[i].id == id){
+                this.arrayProdutos[i].nomeProduto = produto.nomeProduto;
+                this.arrayProdutos[i].preco = produto.valorProduto;
+
+            }
+
+        }
+
     }
 
     validaCampos(produto){
         //valida campos
-        if(produto.nomeProduto == ''){
-            alert('informe o nome do produto');
+        if((produto.nomeProduto == '') || (produto.valorProduto == '')){
+            alert('campos nao podem ser em branco');
 
         }
-        if(produto.valorProduto == ''){
-            alert('informe o preco do produto');
+     
+      
+    }
 
-        }
+    preparaEditacao(dados){
+
+        this.editId = dados.id;
+        document.getElementById("produto").value = dados.nomeProduto;
+        document.getElementById("preco").value = dados.valorProduto; 
 
 
-
+        document.getElementById("btn-1").innerText = "atualizar";
     }
 
     cancelar(){
@@ -87,6 +136,30 @@ class Produto {
         //limpa os campos
         document.getElementById("produto").value = '';
         document.getElementById("preco").value = '';
+
+        document.getElementById("btn-1").innerText = 'salvar';
+        this.editId = null;
+
+    }
+
+    deletar(id){
+
+        for(let i = 0; i< this.arrayProdutos.length; i++){
+            if(this.arrayProdutos[i].id == id){
+
+                this.arrayProdutos.splice(i,1);
+
+                tbody.deleteRow(i);
+
+
+
+            }
+
+            
+        }
+
+        
+
 
     }
 

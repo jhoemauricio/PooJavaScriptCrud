@@ -26,13 +26,16 @@
     </div>
 
     <div class="card">
-        <label>Preço</label>
+        <label>Valor</label>
         <input type="text" id="preco">
     </div>
 
     
-    <button onclick="produto.salvar()">salvar</button>
+    <button onclick="produto.salvar()" id="btn-1">salvar</button>
     <button onclick="produto.cancelar()">cancelar</button>
+    
+   
+    <button onclick="produto.editar()">editar</button>
 
     <div class="content">
         <table border="1">
@@ -40,7 +43,10 @@
                 <th>ID</th>
                 <th>Produto</th>
                 <th>Valor</th>
+                <th>Ações</th>
+             
             </thead>
+           
             <tbody id="tbody">
                
             </tbody>
